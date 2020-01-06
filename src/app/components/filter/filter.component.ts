@@ -14,5 +14,7 @@ export class FilterComponent implements OnInit {
   ngOnInit() {
   }
 
-  openDialog(){}
+  openDialog(){
+    console.log('Se dio clic');
+  }
 }

@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import { FilterComponent } from './components/filter/filter.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
+import { ModalComponent } from './components/modal/modal.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    FilterComponent
+    FilterComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
