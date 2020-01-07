@@ -1,5 +1,6 @@
+<form class="product-form" novalidate [formGroup]="form">
 <mat-form-field>
-   <input matInput [(ngModel)] = "searchValue">
+   <input matInput type="text" formControlName="searchValue" placeholder="{{placeHolderInput}}" (focus)="changePlaceHolderInput('')">
 </mat-form-field>
-<button mat-icon-button (click)="openDialog()"><mat-icon>search</mat-icon></button>
-
+<button mat-icon-button (click)="callService()"><mat-icon>search</mat-icon></button>
+</form>
