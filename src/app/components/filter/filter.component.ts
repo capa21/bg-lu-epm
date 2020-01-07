@@ -24,7 +24,6 @@ export class FilterComponent implements OnInit {
               private formBuilder: FormBuilder,
               private dataservice: DataservicesService) {
                 this.buildForm();
-                this.dataOperator = new DataOperator(dataservice);
                }
 
   ngOnInit() {
@@ -42,11 +41,20 @@ export class FilterComponent implements OnInit {
   }
 
   callService(): void {
-    if (this.dataOperator.callServiceSuccess()) {
-      this.openDialog();
-    } else {
-      this.changePlaceHolderInput('Error al consultar el servicio');
-    }
+    this.dataservice.getData()
+    .subscribe (
+      result => {
+        console.log('respuesta', result);
+        console.log(result.Error);
+        result.Respuesta.forEach(item => {
+          console.log(item.Attributes);
+        });
+        this.openDialog();
+      },
+      error => {
+        this.changePlaceHolderInput('Error al consultar el servicio');
+      }
+    );
   }
   private changePlaceHolderInput(value: string) {
     this.placeHolderInput = value;
