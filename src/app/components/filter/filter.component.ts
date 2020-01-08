@@ -17,12 +17,14 @@ export class FilterComponent implements OnInit {
   form: FormGroup;
   dataOperator: DataOperator;
   response: '';
-  callServiceSuccessField = true;
   placeHolderInput = '';
+  dataTable: object[] = [];
+  fieldsName: string[] = [];
 
   constructor(public dialog: MatDialog,
               private formBuilder: FormBuilder,
               private dataservice: DataservicesService) {
+                this.dataOperator = new DataOperator();
                 this.buildForm();
                }
 
@@ -44,18 +46,24 @@ export class FilterComponent implements OnInit {
     this.dataservice.getData()
     .subscribe (
       result => {
-        console.log('respuesta', result);
-        console.log(result.Error);
-        result.Respuesta.forEach(item => {
-          console.log(item.Attributes);
-        });
-        this.openDialog();
+        if (result.Error == null) {
+          this.prepareDataTable(result.Respuesta);
+          this.openDialog();
+        } else {
+          this.changePlaceHolderInput('Error al consultar el servicio');
+        }
       },
       error => {
         this.changePlaceHolderInput('Error al consultar el servicio');
       }
     );
   }
+  prepareDataTable(respuesta: any) {
+    const preparateData = this.dataOperator.prepareDataTable(respuesta);
+    this.dataTable = preparateData.dataTable;
+    this.fieldsName = preparateData.fieldsName;
+  }
+
   private changePlaceHolderInput(value: string) {
     this.placeHolderInput = value;
   }
@@ -64,7 +72,7 @@ export class FilterComponent implements OnInit {
     console.log('openDialog');
     const dialogRef = this.dialog.open(ModalComponent, {
       width: '50%',
-      data: {name: 'Jesús', response: this.response}
+      data: {filter: this.searchValueField, dataTable: this.dataTable, fieldsName: this.fieldsName, response: this.response},
     });
 
     dialogRef.afterClosed().subscribe(result => {
