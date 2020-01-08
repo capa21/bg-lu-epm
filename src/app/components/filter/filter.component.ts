@@ -33,7 +33,7 @@ export class FilterComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      searchValue: ['', [Validators.required]],
+      searchValue: [''],
       callServiceSuccessField: [true]
     });
   }
@@ -72,7 +72,7 @@ export class FilterComponent implements OnInit {
     console.log('openDialog');
     const dialogRef = this.dialog.open(ModalComponent, {
       width: '50%',
-      data: {filter: this.searchValueField, dataTable: this.dataTable, fieldsName: this.fieldsName, response: this.response},
+      data: {filter: this.searchValueField.value, dataTable: this.dataTable, fieldsName: this.fieldsName, response: this.response},
     });
 
     dialogRef.afterClosed().subscribe(result => {
