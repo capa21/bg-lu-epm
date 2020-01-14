@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { ModalComponent } from '../modal/modal.component';
 import { DataservicesService} from '../../../app/services/dataservices.service';
 import { DataOperator} from './dataOperator';
-
+import { EntryData } from 'src/app/model/entryData';
 
 @Component({
   selector: 'app-filter',
@@ -21,14 +21,22 @@ export class FilterComponent implements OnInit {
   dataTable: object[] = [];
   fieldsName: string[] = [];
 
+  @Input() filter: any;
+  entryData: EntryData;
+
   constructor(public dialog: MatDialog,
               private formBuilder: FormBuilder,
               private dataservice: DataservicesService) {
-                this.dataOperator = new DataOperator();
-                this.buildForm();
-               }
+    this.dataOperator = new DataOperator();
+    this.buildForm();
+  }
 
   ngOnInit() {
+    this.entryData = JSON.parse(this.filter);
+    console.log(this.entryData.url);
+    console.log(this.entryData.headers);
+    console.log(this.entryData.body);
+    console.log('Ten fe. Sí es !!!');
   }
 
   private buildForm() {
@@ -43,7 +51,7 @@ export class FilterComponent implements OnInit {
   }
 
   callService(): void {
-    this.dataservice.getData()
+    this.dataservice.getData(this.entryData)
     .subscribe (
       result => {
         if (result.Error == null) {
@@ -58,6 +66,7 @@ export class FilterComponent implements OnInit {
       }
     );
   }
+
   prepareDataTable(respuesta: any) {
     const preparateData = this.dataOperator.prepareDataTable(respuesta);
     this.dataTable = preparateData.dataTable;
