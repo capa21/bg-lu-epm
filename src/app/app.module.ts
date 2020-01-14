@@ -1,16 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Injector } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { createCustomElement } from '@angular/elements';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FilterComponent } from './components/filter/filter.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { ModalComponent } from './components/modal/modal.component';
 import { DataservicesService } from './services/dataservices.service';
-import { HttpClientModule } from '@angular/common/http';
-
 
 @NgModule({
   declarations: [
@@ -28,7 +28,24 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule
   ],
   providers: [DataservicesService],
-  bootstrap: [AppComponent],
-  entryComponents: [ModalComponent]
+  bootstrap: [],
+  entryComponents: [
+    AppComponent,
+    FilterComponent,
+    ModalComponent
+  ]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private injector: Injector) {
+  }
+
+  ngDoBootstrap() {
+    const ngElement = createCustomElement(FilterComponent, {
+      injector: this.injector
+    });
+    customElements.define('bg-epm', ngElement);
+  }
+
+
+
+}
