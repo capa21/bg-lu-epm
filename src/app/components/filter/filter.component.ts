@@ -1,18 +1,20 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, ApplicationRef, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { ModalComponent } from '../modal/modal.component';
 import { DataservicesService} from '../../../app/services/dataservices.service';
 import { DataOperator} from './dataOperator';
-import { EntryData } from 'src/app/model/entryData';
+import { EntryData } from '../../model/entryData';
+import { NgElementsBase } from 'src/app/utils/ng-elements.base';
+import { EmmitComponentLoad } from 'src/app/decorators/component-load.decorator';
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent extends NgElementsBase implements OnInit {
 
   form: FormGroup;
   dataOperator: DataOperator;
@@ -20,26 +22,26 @@ export class FilterComponent implements OnInit {
   placeHolderInput = '';
   dataTable: object[] = [];
   fieldsName: string[] = [];
-
-  @Input() filter: any;
   entryData: EntryData;
-
   constructor(public dialog: MatDialog,
               private formBuilder: FormBuilder,
-              private dataservice: DataservicesService) {
+              private dataservice: DataservicesService,
+              app: ApplicationRef, el: ElementRef) {
+    super(app, el);
+    this.state = {
+      entryData: this.entryData
+    };
     this.dataOperator = new DataOperator();
     this.buildForm();
   }
 
+  @EmmitComponentLoad
   ngOnInit() {
-    this.entryData = JSON.parse(this.filter);
-    console.log(this.entryData.url);
-    console.log(this.entryData.headers);
-    console.log(this.entryData.body);
-    console.log('Ten fe. Sí es !!!');
+    console.log('FilterComponent ngOnInit executed');
+    console.log('Sí toma modificación');
   }
 
-  private buildForm() {
+  buildForm() {
     this.form = this.formBuilder.group({
       searchValue: [''],
       callServiceSuccessField: [true]
@@ -51,7 +53,7 @@ export class FilterComponent implements OnInit {
   }
 
   callService(): void {
-    this.dataservice.getData(this.entryData)
+    this.dataservice.getData(this.state.entryData)
     .subscribe (
       result => {
         if (result.Error == null) {
@@ -73,7 +75,7 @@ export class FilterComponent implements OnInit {
     this.fieldsName = preparateData.fieldsName;
   }
 
-  private changePlaceHolderInput(value: string) {
+  changePlaceHolderInput(value: string) {
     this.placeHolderInput = value;
   }
 

@@ -10,6 +10,32 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-  <app-root></app-root>
+  <bg-epm></bg-epm>
 </body>
+<script defer>
+setTimeout(()=> {
+  const contentType = 'application/json';
+    const ocpApimSubscriptionKey = '30462a9d27c6451e82eab03dcc422ca9';
+    const xSessionId = 'b4e29345-0816-ea11-93d1-000d3a1fd324';
+    //const bgEpm  = document.createElement('bg-epm');
+    const bgEpm  = document.querySelector('bg-epm');
+    //document.body.append(bgEpm);
+    bgEpm.setState({
+      entryData: {
+        url: 'https://epmapimdes.azure-api.net/ConectorCrm/api/Consultar',
+        method: 'GET',
+        body: {
+          Instancia: 'ConectorCrm_MatrizDllo',
+          FetchXml: '<fetch version=\'1.0\' output-format=\'xml-platform\' mapping=\'logical\' distinct=\'false\'><entity name=\'contact\'><attribute name=\'fullname\' /><attribute name=\'epm_clidentificationnumber\' /><attribute name=\'contactid\' /><filter type=\'and\'><condition attribute=\'fullname\' operator=\'like\' value=\'%1%\' /></filter></entity></fetch>'
+        },
+        headers: {
+          'Content-Type':  contentType,
+          'Ocp-Apim-Subscription-Key': ocpApimSubscriptionKey,
+          'X-SessionId': xSessionId
+        },
+      }
+    });
+},500)
+
+</script>
 </html>

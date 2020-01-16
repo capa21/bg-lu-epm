@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "cd dist/unified-script && serve",
+    "build": "ng build --prod --aot --output-hashing=none && cd dist && rm -rf unified-script && mkdir unified-script && cd bg-epm && cat runtime-es2015.js polyfills-es2015.js main-es2015.js > ../unified-script/elements-es2015.js && cat runtime-es5.js polyfills-es5.js main-es5.js > ../unified-script/elements-es5.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
