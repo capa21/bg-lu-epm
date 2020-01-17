@@ -1,20 +1,17 @@
-import { Component, OnInit, ApplicationRef, ElementRef, ViewEncapsulation } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import {ApplicationRef, Component, ElementRef, OnInit, ViewEncapsulation} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
-import { ModalComponent } from '../modal/modal.component';
-import { DataservicesService} from '../../../app/services/dataservices.service';
-import { DataOperator} from './dataOperator';
-import { EntryData } from '../../model/entryData';
-import { NgElementsBase } from 'src/app/utils/ng-elements.base';
-import { EmmitComponentLoad } from 'src/app/decorators/component-load.decorator';
-import { element } from 'protractor';
+import {ModalComponent} from '../modal/modal.component';
+import {DataservicesService} from '../../../app/services/dataservices.service';
+import {DataOperator} from './dataOperator';
+import {NgElementsBase} from 'src/app/utils/ng-elements.base';
+import {EmmitComponentLoad} from 'src/app/decorators/component-load.decorator';
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss'],
-  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class FilterComponent extends NgElementsBase implements OnInit {
 
