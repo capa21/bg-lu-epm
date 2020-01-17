@@ -55,6 +55,7 @@ export class FilterComponent extends NgElementsBase implements OnInit {
   }
 
   callService(): void {
+    this.changePlaceHolderInput('Cargando...');
     this.dataservice.getData(this.state.entryData)
     .subscribe (
       result => {
@@ -62,11 +63,11 @@ export class FilterComponent extends NgElementsBase implements OnInit {
           this.prepareDataTable(result.Respuesta);
           this.openDialog();
         } else {
-          this.changePlaceHolderInput('Error al consultar el servicio');
+          this.changePlaceHolderInput('Error al consultar servicio');
         }
       },
       error => {
-        this.changePlaceHolderInput('Error al consultar el servicio');
+        this.changePlaceHolderInput('Error al consultar servicio');
       }
     );
   }
