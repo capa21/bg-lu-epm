@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>BgEpm</title>
+  <title>bgEpm1</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -10,17 +10,58 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-  <bg-epm></bg-epm>
+  <!-- <bg-epm></bg-epm> -->
+  <h1 id="someTest">Estado inicial</h1>
+  <button onclick="extract()">get</button>
+
 </body>
 <script defer>
+
+  function extract() {
+    const bgEpm1 = document.getElementById('bgEpm1');
+    console.log(bgEpm1.getState('inputValue'));
+  }
 setTimeout(()=> {
   const contentType = 'application/json';
     const ocpApimSubscriptionKey = '30462a9d27c6451e82eab03dcc422ca9';
     const xSessionId = 'b4e29345-0816-ea11-93d1-000d3a1fd324';
-    //const bgEpm  = document.createElement('bg-epm');
-    const bgEpm  = document.querySelector('bg-epm');
-    //document.body.append(bgEpm);
-    bgEpm.setState({
+    const bgEpm1  = document.createElement('epm-crms-earch');
+    const bgEpm2  = document.createElement('epm-crms-earch');
+    const someTest  = document.getElementById('someTest');
+
+    bgEpm1.addEventListener('loaded',() => console.log('Se está ejecutando el evento loaded 1'));
+    bgEpm2.addEventListener('loaded',() => console.log('Se está ejecutando el evento loaded 2'));
+    bgEpm1.addEventListener('input-change',(e) => {
+      if(!e.detail) {
+        someTest.innerText = "El campo está vacío";
+      } else {
+        someTest.innerText = "El campo lleno";
+      }
+    });
+    bgEpm1.addEventListener('select-record',(event) => {
+      console.log('Información retornada a partir del evento select-record 1', event.detail)
+    });
+    bgEpm2.addEventListener('select-record',(event) => console.log('Información retornada a partir del evento select-record 2', event.detail));
+    //const bgEpm1  = document.querySelector('bg-epm');
+    document.body.append(bgEpm1);
+    document.body.append(bgEpm2);
+    bgEpm1.setState({
+      entryData: {
+        url: 'https://epmapimdes.azure-api.net/ConectorCrm/api/Consultar',
+        method: 'GET',
+        body: {
+          Instancia: 'ConectorCrm_MatrizDllo',
+          FetchXml: '<fetch version=\'1.0\' output-format=\'xml-platform\' mapping=\'logical\' distinct=\'false\'><entity name=\'contact\'><attribute name=\'fullname\' /><attribute name=\'epm_clidentificationnumber\' /><attribute name=\'contactid\' /><filter type=\'and\'><condition attribute=\'fullname\' operator=\'like\' value=\'%1%\' /></filter></entity></fetch>'
+        },
+        headers: {
+          'Content-Type':  contentType,
+          'Ocp-Apim-Subscription-Key': ocpApimSubscriptionKey,
+          'X-SessionId': xSessionId
+        },
+      },
+      inputRefferenceName: 'fullname',
+    });
+    bgEpm2.setState({
       entryData: {
         url: 'https://epmapimdes.azure-api.net/ConectorCrm/api/Consultar',
         method: 'GET',
@@ -35,6 +76,9 @@ setTimeout(()=> {
         },
       }
     });
+    // bgEpm1.addEventListener('loaded',() => console.log('Se está ejecutando el evento loaded'));
+    // bgEpm1.addEventListener('select-record',(event) => console.log('Información retornada a partir del evento select-record', event.detail));
+
 },500)
 
 </script>

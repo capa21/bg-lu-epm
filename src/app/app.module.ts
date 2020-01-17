@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { createCustomElement } from '@angular/elements';
+import {APP_BASE_HREF} from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,6 +12,7 @@ import { FilterComponent } from './components/filter/filter.component';
 import { MaterialModule } from './material/material.module';
 import { ModalComponent } from './components/modal/modal.component';
 import { DataservicesService } from './services/dataservices.service';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +29,7 @@ import { DataservicesService } from './services/dataservices.service';
     MaterialModule,
     HttpClientModule
   ],
-  providers: [DataservicesService],
+  providers: [DataservicesService, {provide: APP_BASE_HREF , useValue: '/'}],
   bootstrap: [],
   entryComponents: [
     AppComponent,
@@ -43,7 +45,7 @@ export class AppModule {
     const ngElement = createCustomElement(FilterComponent, {
       injector: this.injector
     });
-    customElements.define('bg-epm', ngElement);
+    customElements.define('epm-crm-search', ngElement);
   }
 
 

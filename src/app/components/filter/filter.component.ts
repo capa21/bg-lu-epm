@@ -1,6 +1,6 @@
-import { Component, OnInit, ApplicationRef, ElementRef } from '@angular/core';
+import { Component, OnInit, ApplicationRef, ElementRef, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 import { ModalComponent } from '../modal/modal.component';
 import { DataservicesService} from '../../../app/services/dataservices.service';
@@ -8,11 +8,13 @@ import { DataOperator} from './dataOperator';
 import { EntryData } from '../../model/entryData';
 import { NgElementsBase } from 'src/app/utils/ng-elements.base';
 import { EmmitComponentLoad } from 'src/app/decorators/component-load.decorator';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.scss']
+  styleUrls: ['./filter.component.scss'],
+  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class FilterComponent extends NgElementsBase implements OnInit {
 
@@ -22,14 +24,15 @@ export class FilterComponent extends NgElementsBase implements OnInit {
   placeHolderInput = '';
   dataTable: object[] = [];
   fieldsName: string[] = [];
-  entryData: EntryData;
   constructor(public dialog: MatDialog,
               private formBuilder: FormBuilder,
               private dataservice: DataservicesService,
               app: ApplicationRef, el: ElementRef) {
     super(app, el);
     this.state = {
-      entryData: this.entryData
+      entryData: null,
+      inputValue: null,
+      inputRefferenceName: null
     };
     this.dataOperator = new DataOperator();
     this.buildForm();
@@ -37,8 +40,10 @@ export class FilterComponent extends NgElementsBase implements OnInit {
 
   @EmmitComponentLoad
   ngOnInit() {
-    console.log('FilterComponent ngOnInit executed');
-    console.log('Sí toma modificación');
+    this.form.get('searchValue').valueChanges.subscribe((newValue) => {
+      this.setState({inputValue: newValue});
+      this.emitEvent('input-change', newValue);
+    });
   }
 
   buildForm() {
@@ -87,9 +92,9 @@ export class FilterComponent extends NgElementsBase implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      this.form.get('searchValue').setValue(result[this.state.inputRefferenceName]);
       this.response = result;
-      console.log('información de retorno:', this.response);
+      this.emitEvent('select-record', this.response);
     });
   }
 
