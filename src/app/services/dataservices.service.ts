@@ -33,8 +33,13 @@ export class DataservicesService {
       headers: new HttpHeaders(entryData.headers)
     };
 
-    return this.http.post<DataType>(url, body, httpOptions);
+    switch (entryData.method.toUpperCase()) {
+      case 'POST':
+        return this.http.post<DataType>(url, body, httpOptions);
+        break;
+      case 'GET':
+        return this.http.get<DataType>(url, httpOptions);
+        break;
+    }
   }
-
-
 }
