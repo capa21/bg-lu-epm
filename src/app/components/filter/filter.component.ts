@@ -60,6 +60,7 @@ export class FilterComponent extends NgElementsBase implements OnInit {
     .subscribe (
       result => {
         if (result.Error == null) {
+          this.changePlaceHolderInput('');
           this.prepareDataTable(result.Respuesta);
           this.openDialog();
         } else {
