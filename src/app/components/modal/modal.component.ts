@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, ViewChild} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material';
 import { MatPaginator } from '@angular/material/paginator';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-modal',
@@ -14,6 +15,7 @@ export class ModalComponent implements OnInit {
   displayedColumns: string[] = [];
   selectRow: any;
   dataSource: MatTableDataSource<any>;
+  selection: SelectionModel<any>;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
@@ -24,8 +26,8 @@ export class ModalComponent implements OnInit {
       this.myDataTable = this.data.dataTable;
       this.dataSource = new MatTableDataSource(this.myDataTable);
       this.displayedColumns = this.data.fieldsName;
-
-   }
+      this.selection = new SelectionModel<any>(false, []);
+    }
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;

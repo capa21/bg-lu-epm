@@ -12,8 +12,8 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
         (click)="getRecordFromTable(row)"
-        [ngClass]="{hovered: row.hovered, highlighted: row.highlighted}"
-        (click)="row.highlighted = !row.highlighted"
+        [ngClass]="{hovered: row.hovered, highlighted: selection.isSelected(row)}"
+        (click)="selection.toggle(row)"
         (mouseover)="row.hovered = true"
         (mouseout)="row.hovered = false"
     ></tr>
